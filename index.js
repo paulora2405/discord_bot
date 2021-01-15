@@ -20,7 +20,7 @@ for (const file of commandFiles) {
   client.commands.set(command.name, command);
 }
 
-client.on('message', async msg => {
+client.on('message', msg => {
   // se a mensagem nao começa com o prefixo ou o autor da mensagem é um bot, nao faz nada
   if (!msg.content.startsWith(prefix) || msg.author.bot)
     return;
