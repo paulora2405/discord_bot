@@ -4,7 +4,7 @@ module.exports = {
   execute(msg, args) {
     msg.react('🤢');
     if (!msg.mentions.users.size) {
-      msg.channel.send(`Olha essa porra feia aqui: ${msg.author.username}`)
+      msg.channel.send(`Olha essa porra feia aqui:`)
       return msg.channel.send(`${msg.author.displayAvatarURL({ format: "png", dynamic: true })}`);
     }
 
