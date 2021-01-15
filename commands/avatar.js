@@ -1,6 +1,9 @@
 module.exports = {
   name: 'avatar',
   description: 'Mostra como você ou quem você marcar são feios.',
+  args: false,
+  usage: '[@pessoa]+',
+  aliases: ['foto', 'fotos'],
   execute(msg, args) {
     msg.react('🤢');
     if (!msg.mentions.users.size) {

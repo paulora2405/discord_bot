@@ -3,6 +3,8 @@ const fetch = require('node-fetch');
 module.exports = {
   name: 'gif',
   description: 'Procura um gif com um termo inserido - Powered by Tenor (Paga nóis).',
+  args: true,
+  usage: '<termo(s) para pesquisa>',
   async execute(msg, args) {
     let termo = '';
 
