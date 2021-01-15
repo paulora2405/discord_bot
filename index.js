@@ -24,7 +24,6 @@ client.on('message', async msg => {
   // se a mensagem nao começa com o prefixo ou o autor da mensagem é um bot, nao faz nada
   if (!msg.content.startsWith(prefix) || msg.author.bot)
     return;
-
   // cria uma array de strings contendo todos os argumentos passados com o comando
   const args = msg.content.slice(prefix.length).trim().split(/ +/);
   // o comando em si, sem o prefixo
