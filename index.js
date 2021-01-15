@@ -37,7 +37,9 @@ client.on('message', msg => {
   if (command.args && !args.length) {
     let reply = `<@${msg.author.id}> você não inseriu nenhum argumento com o comando animal!`
 
-    reply += `\nO jeito certo é: \`${prefix}${command.name} ${command.usage}\``;
+    if (command.usage)
+      reply += `\nO jeito certo é: \`${prefix}${command.name} ${command.usage}\``;
+
     return msg.channel.send(reply);
   }
 
