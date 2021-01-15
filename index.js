@@ -34,6 +34,13 @@ client.on('message', msg => {
 
   const command = client.commands.get(commandName);
 
+  if (command.args && !args.length) {
+    let reply = `<@${msg.author.id}> você não inseriu nenhum argumento com o comando animal!`
+
+    reply += `\nO jeito certo é: \`${prefix}${command.name} ${command.usage}\``;
+    return msg.channel.send(reply);
+  }
+
   try {
     command.execute(msg, args);
   } catch (err) {
