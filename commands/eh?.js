@@ -1,7 +1,7 @@
 module.exports = {
   name: 'eh?',
   description: 'Confirma se a pessoa marcada é',
-  args: false,
+  args: true,
   usage: '<pessoa>',
   aliases: ['eh', 'é', 'é?'],
   execute(msg, args) {
