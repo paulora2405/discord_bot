@@ -1,9 +1,11 @@
 module.exports = {
   name: 'avatar',
-  description: 'Avatar',
+  description: 'Mostra como você ou quem você marcar são feios.',
   execute(msg, args) {
     msg.react('🤢');
     if (!msg.mentions.users.size) {
+      const user = msg.author;
+      // return msg.channel.send(`Olha essa porra:\n${user.displayAvatarURL({ dynamic: true })}`);
       msg.channel.send(`Olha essa porra feia aqui:`)
       return msg.channel.send(`${msg.author.displayAvatarURL({ format: "png", dynamic: true })}`);
     }

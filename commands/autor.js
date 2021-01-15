@@ -1,8 +1,8 @@
 module.exports = {
   name: 'autor',
-  description: 'Autor',
+  description: 'Quem é autor deste bot.',
   execute(msg, args) {
     msg.react('💯');
-    return msg.channel.send(`O meu autor é o Paulo Roberto Albuquerque!`);
+    return msg.channel.send(`O meu autor é o <@323098525766385665>!`);
   }
 }

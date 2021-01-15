@@ -1,6 +1,6 @@
 module.exports = {
   name: 'apagar',
-  description: 'Apagar',
+  description: 'NOT WORKING - Apaga uma quandidade x de mensagens de um certo canal.',
   execute(msg, args) {
     // NAO TA FUNCIONANDO AINDA
     const qnt = parseInt(args[0]) + 1;
