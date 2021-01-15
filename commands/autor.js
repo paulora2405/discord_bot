@@ -2,7 +2,6 @@ module.exports = {
   name: 'autor',
   description: 'Quem é autor deste bot.',
   args: false,
-  usage: '',
   aliases: ['criador'],
   execute(msg, args) {
     msg.react('💯');
