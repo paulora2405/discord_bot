@@ -1,7 +1,7 @@
 {
   "name": "discordbot",
   "version": "1.0.3",
-  "description": "A simple discord bot for learning purposes <https://discord.com/oauth2/authorize?client_id=799425639219462176&scope=bot>",
+  "description": "A simple discord bot for learning purposes deployed on Heroku. <https://discord.com/oauth2/authorize?client_id=799425639219462176&scope=bot>",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
