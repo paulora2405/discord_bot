@@ -14,7 +14,10 @@ module.exports = {
 
     if (!args.length) {
       data.push('Aqui ta uma lista de todos os meus comandos:');
-      data.push(commands.map(command => command.name).join('\t'));
+      let s = '`';
+      s = s.concat(commands.map(command => command.name).join(', '), '`');
+      // console.log(s);
+      data.push(s);
       data.push(`\nVocê pode mandar \`${prefix}help [nome do comando]\` pra saber mais sobre um comando.`);
 
       return msg.author.send(data, { split: true })
@@ -40,7 +43,7 @@ module.exports = {
     if (command.aliases) data.push(`**Variantes:** ${command.aliases.join('\t')}`);
     if (command.description) data.push(`**Descrição:** ${command.description}`);
     if (command.usage) {
-      data.push(`**Uso:** ${prefix}${command.name} ${command.usage} ${(!command.args) ? ' -> argumento opcional' : ''}`);
+      data.push(`**Uso:** \`${prefix}${command.name} ${command.usage} ${(!command.args) ? ' -> argumento opcional' : ''}\``);
     }
     // se cooldown de comandos for implementado, tirar essa linha do if
     if (command.cooldown) data.push(`**Tempo de espera:** ${command.cooldown || 3} segundos`);
