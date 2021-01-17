@@ -10,6 +10,13 @@ console.log('Inicializando o bot...');
 
 client.once('ready', () => {
   console.log('Pai ta online!');
+  client.user.setPresence({
+    status: "online",
+    activity: {
+      name: "tu fazendo merda",
+      type: "WATCHING"
+    }
+  }).catch(console.error);
 });
 
 
@@ -26,13 +33,11 @@ client.on('message', msg => {
     return;
   // cria uma array de strings contendo todos os argumentos passados com o comando
   const args = msg.content.slice(prefix.length).trim().split(/ +/);
-  // o comando em si, sem o prefixo
+  // o comando em si, sem o prefixo, somente com minusculas
   const commandName = args.shift().toLowerCase();
-
-  if (!client.commands.has(commandName))
-    return;
-
-  const command = client.commands.get(commandName);
+  // pega o comando com um nome de comando direto ou uma das variantes do nome do comando
+  const command = client.commands.get(commandName) || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
+  if (!command) return;
 
   if (command.args && !args.length) {
     let reply = `<@${msg.author.id}> você não inseriu nenhum argumento com o comando animal!`
