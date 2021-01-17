@@ -4,7 +4,6 @@ module.exports = {
   args: true,
   usage: '<X>',
   execute(msg, args) {
-    // NAO TA FUNCIONANDO AINDA
     const qnt = parseInt(args[0]) + 1;
 
     if (isNaN(qnt))
@@ -14,9 +13,10 @@ module.exports = {
       return msg.reply('Tem q ser no minimo 2 e no maximo 99 porra!');
     }
 
-    return msg.channel.bulkDelete(qnt, true).catch(err => {
+    msg.channel.bulkDelete(qnt, true).catch(err => {
       console.error(err);
       msg.channel.send('Deu uma merda aqui qnt tentei apagar as msg tlg');
-    });
+    })
+      .then(msg.channel.send(`${qnt - 1} foram apagadas`));
   }
 }
