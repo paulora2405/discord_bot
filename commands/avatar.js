@@ -5,7 +5,7 @@ module.exports = {
   usage: '[@pessoa]+',
   aliases: ['foto', 'fotos'],
   execute(msg, args) {
-    msg.react('🤢');
+    msg.react('🤢').catch(err => console.error(`Não consegui reagir a mensagem de ${msg.author.tag}.\n`, err));
     if (!msg.mentions.users.size) {
       const user = msg.author;
       // return msg.channel.send(`Olha essa porra:\n${user.displayAvatarURL({ dynamic: true })}`);
