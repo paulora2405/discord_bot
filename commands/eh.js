@@ -1,9 +1,9 @@
 module.exports = {
-  name: 'eh?',
+  name: 'eh',
   description: 'Confirma se a pessoa marcada é',
   args: true,
   usage: '<pessoa>',
-  aliases: ['eh', 'é', 'é?'],
+  aliases: ['eh?', 'é', 'é?'],
   execute(msg, args) {
     if (!msg.mentions.users.size) {
       return msg.reply('Marque alguem para saber se essa pessoa é');
