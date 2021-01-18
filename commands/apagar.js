@@ -4,6 +4,8 @@ module.exports = {
   args: true,
   usage: '<X>',
   execute(msg, args, prefix) {
+    if (msg.channel.type === 'dm') return msg.channel.send('Não consigo apagar mensagens privadas');
+
     const qnt = parseInt(args[0]) + 1;
 
     if (isNaN(qnt))
