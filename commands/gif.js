@@ -3,7 +3,7 @@ const { using_giphy } = require('../config.json');
 
 module.exports = {
   name: 'gif',
-  description: 'Procura um gif com um termo inserido - Powered by Tenor (Paga nóis).',
+  description: 'Procura um gif com um termo inserido.',
   args: true,
   usage: '<termo(s) para pesquisa>',
   async execute(msg, args) {
@@ -20,13 +20,17 @@ module.exports = {
       termo = args.shift();
     }
 
-    console.log(using_giphy);
+    // console.log(using_giphy);
 
     if (using_giphy) {
       let url = `https://api.giphy.com/v1/gifs/search?api_key=${process.env.GIPHY_KEY}&q=${termo}&limit=10&lang=pt`;
       let response = await fetch(url);
       let json = await response.json();
       // console.log(url);
+
+      if (!json.data.length)
+        return msg.channel.send(`**${termo}** ????? Q porra é essa?? Pesquisa alguma coisa de verdade caralho!`);
+
       let index = Math.floor(Math.random() * json.data.length);
       return msg.channel.send(json.data[index].url);
     }
@@ -35,6 +39,10 @@ module.exports = {
       let response = await fetch(url);
       let json = await response.json();
       // console.log(url);
+
+      if (!json.results.length)
+        return msg.channel.send(`**${termo}** ????? Q porra é essa?? Pesquisa alguma coisa de verdade caralho!`);
+
       let index = Math.floor(Math.random() * json.results.length);
       return msg.channel.send(json.results[index].url);
     }
