@@ -40,7 +40,7 @@ module.exports = {
 
     data.push(`**Nome:** ${command.name}`);
 
-    if (command.aliases) data.push(`**Variantes:** ${command.aliases.join('\t')}`);
+    if (command.aliases) data.push(`**Variantes:** \`${command.aliases.join(', ')}\``);
     if (command.description) data.push(`**Descrição:** ${command.description}`);
     if (command.usage) {
       data.push(`**Uso:** \`${prefix}${command.name} ${command.usage} ${(!command.args) ? ' -> argumento opcional' : ''}\``);
