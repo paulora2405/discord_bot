@@ -5,17 +5,11 @@ const { prefix } = require('./config.json');
 const fs = require('fs');
 const Discord = require('discord.js');
 const client = new Discord.Client();
-client.commands = new Discord.Collection();
-
-const guildsDatabase = new Datastore({
-  filename: `databases/guildsPrefixes.db`,
-  corruptAlertThreshold: 0,
-  autoload: true
-});
 
 
+// log ao inicio da execução
 console.log('Inicializando o bot...');
-
+// log uma unica vez quando a conexão é bem sucedida
 client.once('ready', () => {
   console.log('Pai ta online!');
   client.user.setPresence({
@@ -28,25 +22,40 @@ client.once('ready', () => {
 });
 
 
+// carrega todos os arquivos de comandos
+client.commands = new Discord.Collection();
 const commandFiles = fs.readdirSync(`./commands`).filter(file => file.endsWith('.js'));
-
 for (const file of commandFiles) {
   const command = require(`./commands/${file}`);
   client.commands.set(command.name, command);
 }
 
+
+// base de dados para armazenar prefixos customizados
+const guildsDatabase = new Datastore({
+  filename: `databases/guildsPrefixes.db`,
+  corruptAlertThreshold: 0,
+  autoload: true
+});
+
+
+// evento de mensagem
 client.on('message', msg => {
   // se a mensagem nao começa com o prefixo ou o autor da mensagem é um bot, nao faz nada
   if (!msg.content.startsWith(prefix) || msg.author.bot)
     return;
 
-  // guildsDatabase.insert({
+
+  // let doc = {
   //   guild_name: msg.guild.name,
   //   guild_id: msg.guild.id,
   //   guild_prefix: prefix
-  // }, err => {
+  // };
+  // guildsDatabase.insert(doc, err => {
   //   console.error(`Ocorreu um erro ao inserir o servidor ${msg.guild.name} (id=${msg.guild.id})`, err);
   // });
+
+
   // cria uma array de strings contendo todos os argumentos passados com o comando
   const args = msg.content.slice(prefix.length).trim().split(/ +/);
   // o comando em si, sem o prefixo, somente com minusculas
@@ -73,4 +82,6 @@ client.on('message', msg => {
 
 });
 
+
+// faz a conexão com o discord usando o token do bot
 client.login(process.env.DISCORD_TOKEN);
