@@ -1,10 +1,14 @@
-require('dotenv').config();
+require('dotenv').config(); // dotenv package for hiding environment variables
+const fs = require('fs'); // js filesystem
+const Discord = require('discord.js'); // discord api
+const Datastore = require('nedb'); // NeDB database package
+const { defaultPrefix } = require('./config.json'); // default command prefix
 
-const Datastore = require('nedb');
-let { prefix } = require('./config.json');
-const fs = require('fs');
-const Discord = require('discord.js');
 const client = new Discord.Client();
+
+
+// faz a conexão com o discord usando o token do bot
+client.login(process.env.DISCORD_TOKEN);
 
 
 // log ao inicio da execução
@@ -35,90 +39,50 @@ for (const file of commandFiles) {
 const guildsDatabase = new Datastore({
   filename: `databases/guildsPrefixes.db`,
   corruptAlertThreshold: 0,
-  autoload: true
+  autoload: false
 });
 
 
 // evento de mensagem
-client.on('message', msg => {
+client.on('message', onMessageEvent);
+
+
+// callback do evento de mensagem
+async function onMessageEvent(msg) {
   // se o autor da msg é um bot, retorna
   if (msg.author.bot) return;
 
+  // se mensagem é uma DM, trata de maneira apropriada para tal caso
   if (msg.channel.type === 'dm')
     return commandHandleDM(msg);
 
-  // KNOWN BUG - se msg for dm, msg.guild não existe, logo o bot crasha
-  guildsDatabase.findOne({ guild_id: msg.guild.id }, (err, retDoc) => {
+  await guildsDatabase.loadDatabase();
+  guildsDatabase.findOne({ guild_id: msg.guild.id }, async (err, retDoc) => {
     if (err) {
-      prefix = '!';
-      return console.error(`Ocorreu um erro ao inserir o servidor ${msg.guild.name} (id=${msg.guild.id})`, err);
+      console.error(`Ocorreu um erro ao procurar o servidor ${msg.guild.name} (id=${msg.guild.id}) na DB\n`, err);
+      return null;
     }
 
-
-    if (!checkGuildPrefix(msg, retDoc)) return;
-
-    // checa se a msg começa com o prefixo
-    if (!msg.content.startsWith(prefix)) return;
-
-    // cria uma array de strings contendo todos os argumentos passados com o comando
-    const args = msg.content.slice(prefix.length).trim().split(/ +/);
-    // o comando em si, sem o prefixo, somente com minusculas
-    const commandName = args.shift().toLowerCase();
-    // pega o comando com um nome de comando direto ou uma das variantes do nome do comando
-    const command = client.commands.get(commandName) || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
-    if (!command) return;
-
-    if (command.args && !args.length) {
-      let reply = `<@${msg.author.id}> você não inseriu nenhum argumento com o comando animal!`
-
-      if (command.usage)
-        reply += `\nO jeito certo é: \`${prefix}${command.name} ${command.usage}\``;
-
-      return msg.channel.send(reply);
-    }
-
-    try {
-      command.execute(msg, args, prefix);
-    } catch (err) {
-      console.error(err);
-      msg.reply('deu alguma bosta aqui qnd tentei executa isso dai');
-    }
-
-    return;
+    const response = await checkGuildPrefix(msg, retDoc);
+    // console.log(`response=${response}`);
+    if (response)
+      commandHandleGuild(msg, response);
+    else
+      commandHandleGuild(msg);
   });
-});
-
-async function checkGuildPrefix(msg, retDoc) {
-  if (!retDoc) {
-    // seta o prefixo para o padrão para novos servidores
-    prefix = '!';
-
-    // insere na base de dados as informações do servidor de origem da msg
-    const doc = {
-      guild_name: msg.guild.name,
-      guild_id: msg.guild.id,
-      guild_prefix: prefix
-    };
-    guildsDatabase.insert(doc, (err, newDoc) => {
-      if (newDoc) {
-        // console.log(newDoc); // PRINTA NO CONSOLE ------- RETIRAR -----------
-        return true;
-      }
-      if (err) {
-        console.error(`Ocorreu um erro ao inserir o servidor ${msg.guild.name} (id=${msg.guild.id})`, err);
-        return false;
-      }
-    });
-
-  } else {
-    prefix = retDoc.guild_prefix;
-    // console.log(`Servidor ${retDoc.guild_name} já está na DB! (prefix='${retDoc.guild_prefix}')`); // PRINTA NO CONSOLE -------- RETIRAR ------------
-    return true;
-  }
 }
 
-function commandHandleDM(msg) {
-  prefix = '!';
+
+function commandHandleGuild(msg, prefix = '!') {
+  // checa se o conteúdo da mensagem é apenas uma marcação do bot
+  // <@!799425639219462176> tag do bot  
+  if (msg.content.trim() === '<@!799425639219462176>' || msg.content.trim() === '<@799425639219462176>') {
+    const data = [];
+    if (prefix !== defaultPrefix)
+      data.push(`O prefixo de comandos neste servidor foi customizado para \`${prefix}\``);
+    data.push(`Para receber ajuda com comandos, use \`${prefix}help\``);
+    msg.reply(data);
+  }
 
   // checa se a msg começa com o prefixo
   if (!msg.content.startsWith(prefix)) return;
@@ -148,5 +112,58 @@ function commandHandleDM(msg) {
   }
 }
 
-// faz a conexão com o discord usando o token do bot
-client.login(process.env.DISCORD_TOKEN);
+
+// checa se a guilda já existe na DB, e qual é o prefixo
+async function checkGuildPrefix(msg, retDoc) {
+  if (!retDoc) {
+    // insere na base de dados as informações do servidor de origem da msg
+    const doc = {
+      guild_name: msg.guild.name,
+      guild_id: msg.guild.id,
+      guild_prefix: defaultPrefix
+    };
+    guildsDatabase.insert(doc, (err, newDoc) => {
+      if (newDoc) {
+        return defaultPrefix;
+      }
+      if (err) {
+        console.error(`Ocorreu um erro ao inserir o servidor ${msg.guild.name} (id=${msg.guild.id})\n`, err);
+        return;
+      }
+    });
+
+  } else {
+    return retDoc.guild_prefix;
+  }
+}
+
+
+// tratamento de comandos quando a mensagem é uma DM
+function commandHandleDM(msg) {
+  // checa se a msg começa com o prefixo
+  if (!msg.content.startsWith(defaultPrefix)) return;
+
+  // cria uma array de strings contendo todos os argumentos passados com o comando
+  const args = msg.content.slice(defaultPrefix.length).trim().split(/ +/);
+  // o comando em si, sem o prefixo, somente com minusculas
+  const commandName = args.shift().toLowerCase();
+  // pega o comando com um nome de comando direto ou uma das variantes do nome do comando
+  const command = client.commands.get(commandName) || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
+  if (!command) return;
+
+  if (command.args && !args.length) {
+    let reply = `<@${msg.author.id}> você não inseriu nenhum argumento com o comando animal!`
+
+    if (command.usage)
+      reply += `\nO jeito certo é: \`${defaultPrefix}${command.name} ${command.usage}\``;
+
+    return msg.channel.send(reply);
+  }
+
+  try {
+    command.execute(msg, args);
+  } catch (err) {
+    console.error(err);
+    msg.reply('deu alguma bosta aqui qnd tentei executa isso dai');
+  }
+}
