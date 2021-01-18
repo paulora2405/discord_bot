@@ -9,10 +9,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/paulora2405/discord_bot"
+    "url": "https://github.com/paulora2405/discord_bot"
   },
   "author": "Paulo Roberto Albuquerque",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "discord.js": "^12.5.1",
     "dotenv": "^8.2.0",
