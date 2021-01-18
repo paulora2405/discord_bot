@@ -4,7 +4,7 @@ module.exports = {
   args: true,
   usage: '<pessoa>',
   aliases: ['eh?', 'é', 'é?'],
-  execute(msg, args, prefix) {
+  execute(msg, args, prefix = '!') {
     if (!msg.mentions.users.size) {
       return msg.reply('Marque alguem para saber se essa pessoa é');
     }

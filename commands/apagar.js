@@ -3,7 +3,7 @@ module.exports = {
   description: 'NOT WORKING - Apaga uma quandidade X de mensagens de um certo canal.',
   args: true,
   usage: '<X>',
-  execute(msg, args, prefix) {
+  execute(msg, args, prefix = '!') {
     if (msg.channel.type === 'dm') return msg.channel.send('Não consigo apagar mensagens privadas');
 
     const qnt = parseInt(args[0]) + 1;

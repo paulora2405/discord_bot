@@ -6,7 +6,7 @@ module.exports = {
   args: false,
   aliases: ['socorro', 'ajuda', 'comandos', 'commands'],
   usage: '[nome de um comando]',
-  execute(msg, args, prefix) {
+  execute(msg, args, prefix = '!') {
     msg.react('✍️').catch(err => console.error(`Não consegui reagir a mensagem de ${msg.author.tag}.\n`, err));
 
     const data = [];
