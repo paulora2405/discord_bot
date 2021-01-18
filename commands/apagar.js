@@ -3,7 +3,7 @@ module.exports = {
   description: 'NOT WORKING - Apaga uma quandidade X de mensagens de um certo canal.',
   args: true,
   usage: '<X>',
-  execute(msg, args) {
+  execute(msg, args, prefix) {
     const qnt = parseInt(args[0]) + 1;
 
     if (isNaN(qnt))

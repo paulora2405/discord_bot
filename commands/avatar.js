@@ -4,7 +4,7 @@ module.exports = {
   args: false,
   usage: '[@pessoa]+',
   aliases: ['foto', 'fotos'],
-  execute(msg, args) {
+  execute(msg, args, prefix) {
     msg.react('🤢').catch(err => console.error(`Não consegui reagir a mensagem de ${msg.author.tag}.\n`, err));
     if (!msg.mentions.users.size) {
       const user = msg.author;

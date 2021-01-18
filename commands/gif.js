@@ -6,7 +6,7 @@ module.exports = {
   description: 'Procura um gif com um termo inserido.',
   args: true,
   usage: '<termo(s) para pesquisa>',
-  async execute(msg, args) {
+  async execute(msg, args, prefix) {
     let termo = '';
 
     if (msg.mentions.size)
