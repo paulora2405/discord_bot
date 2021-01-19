@@ -6,10 +6,12 @@ module.exports = {
   aliases: ['eh?', 'é', 'é?'],
   execute(msg, args, prefix = '!') {
     if (!msg.mentions.users.size) {
+      msg.react('🚫').catch(err => console.error(`Não consegui reagir a mensagem de ${msg.author.tag}.\n`, err));
       return msg.reply('Marque alguem para saber se essa pessoa é');
     }
 
     if (msg.mentions.users.size > 1) {
+      msg.react('🚫').catch(err => console.error(`Não consegui reagir a mensagem de ${msg.author.tag}.\n`, err));
       return msg.reply(`Marca um filha da puta só seu burro!`);
     }
 

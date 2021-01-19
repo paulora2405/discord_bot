@@ -9,8 +9,10 @@ module.exports = {
   async execute(msg, args, prefix = '!') {
     let termo = '';
 
-    if (msg.mentions.size)
+    if (msg.mentions.size) {
+      msg.react('🚫').catch(err => console.error(`Não consegui reagir a mensagem de ${msg.author.tag}.\n`, err));
       return msg.channel.send('Não precisa marca ngm burro! Só coloca um termo pra pesquisa caralho')
+    }
 
 
     if (args.length > 1) {

@@ -96,6 +96,7 @@ function commandHandleGuild(msg, prefix = '!') {
   if (!command) return;
 
   if (command.args && !args.length) {
+    msg.react('🚫').catch(err => console.error(`Não consegui reagir a mensagem de ${msg.author.tag}.\n`, err));
     let reply = `<@${msg.author.id}> você não inseriu nenhum argumento com o comando animal!`
 
     if (command.usage)

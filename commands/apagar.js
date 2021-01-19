@@ -8,10 +8,13 @@ module.exports = {
 
     const qnt = parseInt(args[0]) + 1;
 
-    if (isNaN(qnt))
+    if (isNaN(qnt)) {
+      msg.react('🚫').catch(err => console.error(`Não consegui reagir a mensagem de ${msg.author.tag}.\n`, err));
       return msg.reply('Tem q manda um numero junto animal!');
+    }
 
     else if (qnt < 1 || qnt > 100) {
+      msg.react('🚫').catch(err => console.error(`Não consegui reagir a mensagem de ${msg.author.tag}.\n`, err));
       return msg.reply('Tem q ser no minimo 2 e no maximo 99 porra!');
     }
 

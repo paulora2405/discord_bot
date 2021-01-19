@@ -26,6 +26,7 @@ module.exports = {
           msg.reply('Eu te mandei na DM todos os meus comandos.');
         })
         .catch(err => {
+          msg.react('🚫').catch(err => console.error(`Não consegui reagir a mensagem de ${msg.author.tag}.\n`, err));
           console.error(`Não consegui enviar ajuda na DM de ${msg.author.tag}.\n`, err);
           msg.reply('Parece que não consegui te mandar ajuda na DM, talvez suas DM\'s estejam desligadas?');
         });
@@ -35,6 +36,7 @@ module.exports = {
     const command = commands.get(name) || commands.find(c => c.aliases && c.aliases.includes(name));
 
     if (!command) {
+      msg.react('🚫').catch(err => console.error(`Não consegui reagir a mensagem de ${msg.author.tag}.\n`, err));
       return msg.reply('Esse comando não existe.');
     }
 
