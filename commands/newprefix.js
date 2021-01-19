@@ -13,7 +13,7 @@ module.exports = {
     }
 
     if (args.length > 1) {
-      msg.reply(`O prefixo deve ser apenas uma cadeia de caracteres sem espaços.`);
+      return msg.reply(`O prefixo deve ser apenas uma cadeia de caracteres sem espaços.`);
     }
 
     // base de dados para armazenar prefixos customizados
