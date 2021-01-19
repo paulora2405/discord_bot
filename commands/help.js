@@ -13,12 +13,17 @@ module.exports = {
     const { commands } = msg.client;
 
     if (!args.length) {
+      const { sendHelpToDM } = require('../config.json');
       data.push('Aqui ta uma lista de todos os meus comandos:');
-      let s = '`';
-      s = s.concat(commands.map(command => command.name).join(', '), '`');
+      let s = '';
+      s = s.concat('`', commands.map(command => command.name).join(', '), '`');
       // console.log(s);
       data.push(s);
       data.push(`\nVocê pode mandar \`${prefix}help [nome do comando]\` pra saber mais sobre um comando.`);
+
+      if (!sendHelpToDM) {
+        return msg.channel.send(data, { split: true });
+      }
 
       return msg.author.send(data, { split: true })
         .then(() => {
