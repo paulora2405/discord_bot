@@ -1,4 +1,5 @@
 {
   "defaultPrefix": "!",
-  "using_giphy": true
+  "using_giphy": true,
+  "sendHelpToDM": false
 }
