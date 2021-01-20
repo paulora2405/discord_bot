@@ -1,12 +1,12 @@
 const fetch = require('node-fetch');
-const { using_giphy } = require('../config.json');
+const { defaultPrefix, using_giphy } = require('../config.json');
 
 module.exports = {
   name: 'gif',
   description: 'Procura um gif com um termo inserido.',
   args: true,
   usage: '<termo(s) para pesquisa>',
-  async execute(msg, args, prefix = '!') {
+  async execute(msg, args, prefix = defaultPrefix) {
     let termo = '';
 
     if (msg.mentions.size) {

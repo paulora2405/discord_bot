@@ -1,10 +1,12 @@
+const { defaultPrefix } = require('../config.json');
+
 module.exports = {
   name: 'eh',
   description: 'Confirma se a pessoa marcada é',
   args: true,
   usage: '<pessoa>',
   aliases: ['eh?', 'é', 'é?'],
-  execute(msg, args, prefix = '!') {
+  execute(msg, args, prefix = defaultPrefix) {
     if (!msg.mentions.users.size) {
       msg.react('🚫').catch(err => console.error(`Não consegui reagir a mensagem de ${msg.author.tag}.\n`, err));
       return msg.reply('Marque alguem para saber se essa pessoa é');

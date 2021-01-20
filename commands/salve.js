@@ -1,8 +1,10 @@
+const { defaultPrefix } = require('../config.json');
+
 module.exports = {
   name: 'salve',
   description: 'Salva todos do servidor.',
   args: false,
-  execute(msg, args, prefix = '!') {
+  execute(msg, args, prefix = defaultPrefix) {
     if (msg.channel.type === 'dm')
       return msg.channel.send(`Um salve pra você ${msg.author.username}!`);
 

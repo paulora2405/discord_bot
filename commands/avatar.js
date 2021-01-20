@@ -1,10 +1,12 @@
+const { defaultPrefix } = require('../config.json');
+
 module.exports = {
   name: 'avatar',
   description: 'Mostra como você ou quem você marcar são feios.',
   args: false,
   usage: '[@pessoa]+',
   aliases: ['foto', 'fotos'],
-  execute(msg, args, prefix = '!') {
+  execute(msg, args, prefix = defaultPrefix) {
     msg.react('🤢').catch(err => console.error(`Não consegui reagir a mensagem de ${msg.author.tag}.\n`, err));
     if (!msg.mentions.users.size) {
       const user = msg.author;

@@ -1,10 +1,12 @@
+const { defaultPrefix } = require('../config.json');
+
 module.exports = {
   name: 'newprefix',
   description: 'Altera o prefixo padrão do servidor.',
   args: true,
   aliases: ['prefixo', 'prefix', 'novoprefixo'],
   usage: '[novo prefixo]',
-  async execute(msg, args, prefix = '!') {
+  async execute(msg, args, prefix = defaultPrefix) {
     if (msg.channel.type === 'dm') {
       msg.react('🚫').catch(err => console.error(`Não consegui reagir a mensagem de ${msg.author.tag}.\n`, err));
       msg.reply('Este comando só serve para servidores, não para mensagens privadas.');
