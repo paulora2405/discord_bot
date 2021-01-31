@@ -31,6 +31,6 @@ Distributed under the MIT license. See ``LICENSE`` for more information.
 
 <!-- Links -->
 [herokusite]: https://heroku.com
-[invitebot]: https://discord.com/oauth2/authorize?client_id=799425639219462176&scope=bot
+[invitebot]: https://discord.com/oauth2/authorize?client_id=799425639219462176&scope=bot&permissions=11328
 [twitter]: https://twitter.com/paulora2405
 [github]: https://github.com/paulora2405/discord_bot
