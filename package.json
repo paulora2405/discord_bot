@@ -1,11 +1,11 @@
 {
   "name": "discordbot",
   "version": "1.0.4",
-  "description": "A simple discord bot for learning purposes deployed on Heroku. <https://discord.com/oauth2/authorize?client_id=799425639219462176&scope=bot>",
+  "description": "A simple discord bot for learning purposes deployed on Heroku.",
   "main": "app.js",
   "scripts": {
     "start": "node .",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"No test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
