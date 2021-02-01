@@ -10,6 +10,6 @@ module.exports = {
     const data = [];
     data.push(`Para convidar o bot, basta clicar no seguinte link:`);
     data.push(`https://discord.com/oauth2/authorize?client_id=799425639219462176&scope=bot&permissions=11328`);
-    return msg.send(data);
+    return msg.channel.send(data);
   }
 }
