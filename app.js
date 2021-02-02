@@ -75,7 +75,7 @@ async function onMessageEvent(msg) {
 
 function commandHandleGuild(msg, prefix = '!') {
   // checa se o conteúdo da mensagem é apenas uma marcação do bot
-  // <@!799425639219462176> tag do bot  
+  // <@!799425639219462176> tag do bot
   if (msg.content.trim() === '<@!799425639219462176>' || msg.content.trim() === '<@799425639219462176>') {
     const data = [];
     if (prefix !== defaultPrefix)
@@ -108,7 +108,7 @@ function commandHandleGuild(msg, prefix = '!') {
   try {
     command.execute(msg, args, prefix);
   } catch (err) {
-    console.error(err);
+    console.error(`Erro ao executar o comando ${msg.content} de ${msg.author.tag}, no canal ${msg.channel.tag}, do servidor ${msg.guild.tag}`, err);
     msg.reply('deu alguma bosta aqui qnd tentei executa isso dai');
   }
 }
