@@ -35,14 +35,6 @@ for (const file of commandFiles) {
 }
 
 
-// base de dados para armazenar prefixos customizados
-const guildsDatabase = new Datastore({
-  filename: `databases/guildsPrefixes.db`,
-  corruptAlertThreshold: 0,
-  autoload: false
-});
-
-
 // evento de mensagem
 client.on('message', onMessageEvent);
 
@@ -56,20 +48,16 @@ async function onMessageEvent(msg) {
   if (msg.channel.type === 'dm')
     return commandHandleDM(msg);
 
-  await guildsDatabase.loadDatabase();
-  guildsDatabase.findOne({ guild_id: msg.guild.id }, async (err, retDoc) => {
-    if (err) {
-      console.error(`Ocorreu um erro ao procurar o servidor ${msg.guild.name} (id=${msg.guild.id}) na DB\n`, err);
-      return null;
-    }
+  // base de dados para armazenar prefixos customizados
+  const rawDb = fs.readFileSync(`databases/guildPrefixes.json`);
+  const guildsDatabaseJson = JSON.parse(rawDb);
 
-    const response = await checkGuildPrefix(msg, retDoc);
-    // console.log(`response=${response}`);
-    if (response)
-      commandHandleGuild(msg, response);
-    else
-      commandHandleGuild(msg);
-  });
+  if (guildsDatabaseJson.hasOwnProperty(msg.guild.id)) {
+    const response = guildsDatabaseJson[msg.guild.id];
+    commandHandleGuild(msg, response);
+  } else {
+    commandHandleGuild(msg);
+  }
 }
 
 
@@ -113,30 +101,6 @@ function commandHandleGuild(msg, prefix = '!') {
   }
 }
 
-
-// checa se a guilda já existe na DB, e qual é o prefixo
-async function checkGuildPrefix(msg, retDoc) {
-  if (!retDoc) {
-    // insere na base de dados as informações do servidor de origem da msg
-    const doc = {
-      guild_name: msg.guild.name,
-      guild_id: msg.guild.id,
-      guild_prefix: defaultPrefix
-    };
-    guildsDatabase.insert(doc, (err, newDoc) => {
-      if (newDoc) {
-        return defaultPrefix;
-      }
-      if (err) {
-        console.error(`Ocorreu um erro ao inserir o servidor ${msg.guild.name} (id=${msg.guild.id})\n`, err);
-        return;
-      }
-    });
-
-  } else {
-    return retDoc.guild_prefix;
-  }
-}
 
 
 // tratamento de comandos quando a mensagem é uma DM
