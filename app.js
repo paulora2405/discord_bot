@@ -1,7 +1,6 @@
 require('dotenv').config(); // dotenv package for hiding environment variables
 const fs = require('fs'); // js filesystem
 const Discord = require('discord.js'); // discord api
-const Datastore = require('nedb'); // NeDB database package
 const { defaultPrefix } = require('./config.json'); // default command prefix
 
 const client = new Discord.Client();

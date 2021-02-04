@@ -9,7 +9,6 @@ Link to invite and authorize the up and running bot, [click here][invitebot].
 
 - `discord.js ^12.5.1`
 - `dotenv ^8.2.0`
-- `nedb ^1.8.0`
 - `node-fetch ^2.6.1`
 
 
